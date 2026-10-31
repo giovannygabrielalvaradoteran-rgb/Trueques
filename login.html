@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro / Iniciar Sesión - TruequeApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-6 text-center text-indigo-600">TruequeApp</h2>
+        
+        <!-- Formulario -->
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Correo Electrónico</label>
+                <input type="email" id="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="tu@correo.com">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
+                <input type="password" id="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="********">
+            </div>
+            
+            <button id="btn-registrarse" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">Registrarse</button>
+            <button id="btn-login" class="w-full bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition">Ya tengo cuenta (Iniciar Sesión)</button>
+        </div>
+    </div>
+
+    <!-- Script de autenticación -->
+    <script type="module">
+        import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "./js/app.js";
+
+        const inputEmail = document.getElementById("email");
+        const inputPassword = document.getElementById("password");
+
+        // Botón de Registrarse
+        document.getElementById("btn-registrarse").addEventListener("click", () => {
+            const email = inputEmail.value;
+            const password = inputPassword.value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("¡Registro exitoso! Bienvenido: " + userCredential.user.email);
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Error en el registro: " + error.message);
+                });
+        });
+
+        // Botón de Iniciar Sesión
+        document.getElementById("btn-login").addEventListener("click", () => {
+            const email = inputEmail.value;
+            const password = inputPassword.value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("¡Bienvenido de nuevo!");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Error al iniciar sesión: " + error.message);
+                });
+        });
+    </script>
+</body>
+</html>
